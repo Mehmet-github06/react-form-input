@@ -21,6 +21,7 @@ const Forms = () => {
   const [showCard, setShowCard] = useState(false);
   const [showPas, setShowPas] = useState(false);
   const [kosul, setKosul] = useState(false);
+  const [loading,setLoading]=useState(false);
 
   const { username, email, password, firstname, lastname, image } = data;
 
@@ -53,6 +54,11 @@ const Forms = () => {
     if (password.length < 8) {
       alert("Şifre en az 8 haneli olmalıdır");
     }
+
+    setTimeout(() => {
+        setLoading(false)
+    }, 700);
+    setLoading(true)
 
     if (
       username.trim().length < 3 ||
@@ -159,7 +165,7 @@ const Forms = () => {
             onMouseMove={handleFormStart}
             disabled={kosul}
           >
-            Submit
+            {loading ? "loading... ": "Submit"}
           </Button>
         </Form.Group>
       </Form>
