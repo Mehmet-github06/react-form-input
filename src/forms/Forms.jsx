@@ -19,9 +19,28 @@ const Forms = () => {
   });
 
   const [showCard, setShowCard] = useState(false);
-  useState
+  const [showPas, setShowPas] = useState(false);
+  const [kosul, setKosul] = useState(false);
 
   const { username, email, password, firstname, lastname, image } = data;
+
+  const handleFormStart = () => {
+    if (
+      password.length < 8 ||
+      username.trim().length < 3 ||
+      firstname.trim().length < 3 ||
+      lastname.trim().length < 3
+    ) {
+      setKosul(true);
+    }else{
+        setKosul(false)
+    }
+  };
+  const handleStop = ()=>{
+    setTimeout(() => {
+        setKosul(false)
+    }, 200);
+  }
 
   const handleData = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
@@ -33,13 +52,6 @@ const Forms = () => {
     setShowCard(true);
     if (password.length < 8) {
       alert("Şifre en az 8 haneli olmalıdır");
-    }
-
-    const emailParts = email.split("@");
-    const emailPartsDoc = emailParts[1].split(".");
-    console.log(emailPartsDoc);
-    if (emailPartsDoc.length > 3 || emailPartsDoc.length <= 1) {
-      alert("Lütfen geçerli bir mail adresi yazınız.");
     }
 
     if (
@@ -122,26 +134,36 @@ const Forms = () => {
           <div className="d-flex ">
             <Form.Control
               onChange={handleData}
-              type="password"
+              type={showPas ? "text" : "password"}
               id="password"
               value={password}
               placeholder="Password"
               aria-label="password"
               aria-describedby="basic-addon2"
             />
-            <Button variant="outline-secondary" id="button-addon2">
+            <Button
+              variant="outline-secondary"
+              id="button-addon2"
+              onClick={() => setShowPas(!showPas)}
+            >
               Show/Hidden
             </Button>
           </div>
         </InputGroup>
 
-        <Form.Group className="mb-3 d-flex mx-auto">
-          <Button className="btn mt-3" variant="primary" type="submit">
+        <Form.Group className="mb-3 d-flex mx-auto" onMouseLeave={handleStop}>
+          <Button
+            className={`btn mt-3 ${kosul ? "animate": ""}`}
+            variant="primary"
+            type="submit"
+            onMouseMove={handleFormStart}
+            disabled={kosul}
+          >
             Submit
           </Button>
         </Form.Group>
       </Form>
-      {showCard && <Cards veri={data}  />}
+      {showCard && <Cards veri={data} />}
     </>
   );
 };
