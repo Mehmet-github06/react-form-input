@@ -21,7 +21,8 @@ const Forms = () => {
   const [showCard, setShowCard] = useState(false);
   const [showPas, setShowPas] = useState(false);
   const [kosul, setKosul] = useState(false);
-  const [loading,setLoading]=useState(false);
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState({});
 
   const { username, email, password, firstname, lastname, image } = data;
 
@@ -33,15 +34,15 @@ const Forms = () => {
       lastname.trim().length < 3
     ) {
       setKosul(true);
-    }else{
-        setKosul(false)
+    } else {
+      setKosul(false);
     }
   };
-  const handleStop = ()=>{
+  const handleStop = () => {
     setTimeout(() => {
-        setKosul(false)
+      setKosul(false);
     }, 200);
-  }
+  };
 
   const handleData = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
@@ -56,9 +57,9 @@ const Forms = () => {
     }
 
     setTimeout(() => {
-        setLoading(false)
+      setLoading(false);
     }, 700);
-    setLoading(true)
+    setLoading(true);
 
     if (
       username.trim().length < 3 ||
@@ -67,6 +68,24 @@ const Forms = () => {
     ) {
       alert("en az 3 karakter olmalı");
     }
+
+    setUser({
+      username,
+      email,
+      password,
+      firstname,
+      lastname,
+      image,
+    });
+    setData({
+      username:"",
+      email:"",
+      password:"",
+      firstname:"",
+      lastname:"",
+      image:"",
+
+    })
   };
 
   return (
@@ -159,17 +178,17 @@ const Forms = () => {
 
         <Form.Group className="mb-3 d-flex mx-auto" onMouseLeave={handleStop}>
           <Button
-            className={`btn mt-3 ${kosul ? "animate": ""}`}
+            className={`btn mt-3 ${kosul ? "animate" : ""}`}
             variant="primary"
             type="submit"
             onMouseMove={handleFormStart}
             disabled={kosul}
           >
-            {loading ? "loading... ": "Submit"}
+            {loading ? "loading... " : "Submit"}
           </Button>
         </Form.Group>
       </Form>
-      {showCard && <Cards veri={data} />}
+      {showCard && <Cards veri={user} />}
     </>
   );
 };
